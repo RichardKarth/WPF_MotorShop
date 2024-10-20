@@ -46,7 +46,8 @@ public class CustomerService_Tests
 
         //Act
 
-        //Mocks both methods DeleteFromFile uses
+
+        //Mocks both methods DeleteFromFile uses, also took help from ChatGPT to write it in Json format
         _fileServiceMock.Setup(x => x.GetFromFile()).Returns("[{\"FirstName\":\"Richard\", \"Email\":\"richard@domain.se\", \"Id\":\"" + customer.Id + "\"}]");
         _fileServiceMock.Setup(x => x.SaveToFile(It.IsAny<string>())).Returns(ServiceResponse.Success);
 

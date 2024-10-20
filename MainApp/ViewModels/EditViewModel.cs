@@ -18,6 +18,7 @@ public partial class EditViewModel : ObservableObject
         _serviceProvider = serviceProvider;
         _customerService = customerService;
 
+        //Got help from ChatGPT on how to write the constructor
         Categories = new List<Category>
         {
             new Category { Id = 1, Name = "Boat" },
