@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="400">
+        Title="MainWindow" Height="950" Width="800">
     <Grid>
         <ContentControl Content="{Binding CurrentViewModel}"/>
 

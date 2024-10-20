@@ -43,7 +43,14 @@ public class FileService : IFileService
 
                 return content;
             }
-            return null!;
+            else
+            {
+                string content = string.Empty!;
+                using var sw = new StreamWriter(_filePath);
+                sw.WriteLine(content);
+                return content;
+            }
+         
         }
         catch
         {

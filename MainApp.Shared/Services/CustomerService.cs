@@ -11,17 +11,31 @@ public class CustomerService : ICustomerService
     
     private List<Customer> _customerList;
     private readonly IFileService _fileService;
-
-    public CustomerService(IFileService fileService)
+    
+    public CustomerService(IFileService fileService, List<Customer> customerList = null)
     {
         _fileService = fileService;
-        _customerList = [];
+        _customerList = customerList ?? new();
     }
     public ServiceResponse SaveCustomer(Customer customer)
     {
-        _customerList.Add(customer);
-        var result = _fileService.SaveToFile(JsonConvert.SerializeObject(_customerList, Formatting.Indented));
-        return ServiceResponse.Success;
+        try
+        {
+            var existingEmail = _customerList.FirstOrDefault(x => x.Email == customer.Email);
+            if (existingEmail is not null)
+            {
+                return ServiceResponse.Exists;
+            }
+
+            _customerList.Add(customer);
+            var result = _fileService.SaveToFile(JsonConvert.SerializeObject(_customerList, Formatting.Indented));
+            return ServiceResponse.Success;
+        }
+        catch
+        {
+            return ServiceResponse.Error;
+        }
+       
     }
 
     public ServiceResponse UpdateCustomer(Customer customer)
@@ -29,7 +43,7 @@ public class CustomerService : ICustomerService
         var existingUser = _customerList.FirstOrDefault(c => c.Id == customer.Id);
         try
         {
-            if (existingUser == customer)
+            if (existingUser is not null)
             {
                 existingUser = customer;
                 var result = _fileService.SaveToFile(JsonConvert.SerializeObject(_customerList, Formatting.Indented));
@@ -48,13 +62,21 @@ public class CustomerService : ICustomerService
     }
     public IEnumerable<Customer> GetCustomer()
     {
-        var listContent = _fileService.GetFromFile();
-        var tempList = JsonConvert.DeserializeObject<List<Customer>>(listContent);
-        if (tempList != null && tempList.Count > 0)
+        try
         {
-            _customerList = tempList;
+            var listContent = _fileService.GetFromFile();
+            var tempList = JsonConvert.DeserializeObject<List<Customer>>(listContent);
+            if (tempList != null && tempList.Count > 0)
+            {
+                _customerList = tempList;
+            }
+            return _customerList;
         }
-        return _customerList;
+        catch
+        {
+            return Enumerable.Empty<Customer>();
+        }
+       
     }
     public ServiceResponse DeleteCustomer(string id)
     {
