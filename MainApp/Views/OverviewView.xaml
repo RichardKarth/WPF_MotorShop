@@ -35,7 +35,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Name" Grid.Column="0" HorizontalAlignment="Left"/>
+                <TextBlock Text="Id" Grid.Column="0" HorizontalAlignment="Left"/>
                 <TextBlock Text="Category" Grid.Column="1" HorizontalAlignment="Center"/>
                 <TextBlock Text="Edit/Delete" Grid.Column="2" HorizontalAlignment="Right"/>
             </Grid>
